@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💘</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', cursive;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  text-shadow: 3px 3px #ff3b6f;
+}
+
+.box {
+  position: relative;
+  width: 360px;
+  height: 240px;
+  margin-top: 30px;
+}
+
+button {
+  position: absolute;
+  padding: 15px 30px;
+  font-size: 20px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  transition: left 0.25s ease, top 0.25s ease, transform 0.15s ease;
+}
+
+#yes {
+  background: #4CAF50;
+  color: white;
+  left: 40px;
+  top: 100px;
+}
+
+#no {
+  background: #ff3b6f;
+  color: white;
+  left: 220px;
+  top: 100px;
+}
+
+.heart {
+  position: fixed;
+  font-size: 26px;
+  animation: float 3s linear forwards;
+}
+
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-160px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Will you be my Valentine? 💘</h1>
+
+<div class="box" id="box">
+  <button id="yes">Sì 💕</button>
+  <button id="no">No 💔</button>
+</div>
+
+<script>
+const box = document.getElementById("box");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+
+let attempts = 0;
+
+const noTexts = [
+    "No 💔",
+    "ouuu statti ferma 😅",
+    "jaaaaa 🥺",
+    "mo ti mignu 😭",
+    "okk ja gut basta 🙄",
+    "ja gut tschuss 😳",
+	"fatyyy non devi premere qui... 😭😭😭"
+];
+
+// posizione iniziale NO
+let pos = { x: noBtn.offsetLeft, y: noBtn.offsetTop };
+
+// funzione per muovere il NO evitando sempre il SÌ
+function moveNo() {
+  attempts++;
+
+  const maxX = box.clientWidth - noBtn.offsetWidth;
+  const maxY = box.clientHeight - noBtn.offsetHeight;
+
+  const yesRect = yesBtn.getBoundingClientRect();
+  const boxRect = box.getBoundingClientRect();
+
+  let x = 0, y = 0;
+  let safe = false;
+  let tries = 0;
+
+  while (!safe && tries < 10) {
+    tries++;
+    x = Math.random() * maxX;
+    y = Math.random() * maxY;
+
+    const noLeft = boxRect.left + x;
+    const noTop  = boxRect.top + y;
+    const noRight = noLeft + noBtn.offsetWidth;
+    const noBottom= noTop + noBtn.offsetHeight;
+
+    const overlap = !(noRight < yesRect.left || noLeft > yesRect.right ||
+                      noBottom < yesRect.top || noTop > yesRect.bottom);
+
+    if (!overlap) safe = true;
+  }
+
+  // se non trova posizione libera, spostamento minimo casuale
+  if (!safe) {
+    x = pos.x + (Math.random()*50 - 25);
+    y = pos.y + (Math.random()*50 - 25);
+  }
+
+  // bonus di movimento molto più ampio
+  const bonus = Math.min(attempts * 10, 120); // fino a 120px extra
+  x += Math.random() * bonus - bonus/2;
+  y += Math.random() * bonus - bonus/2;
+
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+
+  pos.x = x;
+  pos.y = y;
+
+  noBtn.style.left = pos.x + "px";
+  noBtn.style.top  = pos.y + "px";
+
+  // rimpicciolisce leggermente con il tempo
+  noBtn.style.transform = `scale(${Math.max(0.6, 1 - attempts*0.03)})`;
+
+  // frasi in loop
+  noBtn.textContent = noTexts[attempts % noTexts.length];
+}
+
+
+// eventi: mouse e click
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", moveNo); // fallback
+
+// SÌ
+yesBtn.onclick = () => {
+  const song = new Audio("tananai_rave_eclissi.mp3");
+  song.play();
+
+  document.body.innerHTML = `
+    <h1>Happy Valentine’s Day Faty ❤️</h1>
+  `;
+  setInterval(createHeart, 200);
+};
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.bottom = "0px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 3000);
+}
+</script>
+
+</body>
+</html>
