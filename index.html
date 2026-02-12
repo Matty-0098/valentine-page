@@ -19,6 +19,12 @@ body {
   text-align: center;
 }
 
+.intro {
+  font-size: 2.1rem;  /* più piccolo dei 3rem di default */
+  text-shadow: 2px 2px #ff3b6f; /* opzionale, più delicato */
+  margin: 5px 0; /* margine verticale più piccolo */
+}
+
 h1 {
   font-size: 3rem;
   text-shadow: 3px 3px #ff3b6f;
@@ -70,8 +76,8 @@ button {
 
 <body>
 
-<h1>Ti andrebbe di cenare insieme?❤️</h1>
-<h1>(anche a distanza)</h1>
+<h1 class="intro">Ti andrebbe di cenare insieme il giorno di San Valentino?❤️</h1>
+<h1 class="intro">(anche a distanza)</h1>
 
 <div class="box" id="box">
   <button id="yes">Sì 💕</button>
@@ -165,11 +171,40 @@ yesBtn.onclick = () => {
   const song = new Audio("tananai_rave_eclissi.mp3");
   song.play();
 
-  document.body.innerHTML = `
-    <h1>Buon San Valentino Faty ❤️</h1>
-  `;
+  // Rimuove tutto il contenuto precedente
+  document.body.innerHTML = "";
+
+  // Messaggio principale
+  const h1 = document.createElement("h1");
+  h1.textContent = "Buon San Valentino Faty ❤️";
+  document.body.appendChild(h1);
+
+  // Messaggio interattivo per far comparire il cuore
+  const hint = document.createElement("p");
+  hint.textContent = "Pensa che ti sto facendo anche uno di questi mentre mangiamo (clicca qui)";
+  hint.style.cursor = "pointer";
+  hint.style.fontSize = "1.5rem";
+  hint.style.marginTop = "20px";
+  document.body.appendChild(hint);
+
+  // Funzione per mostrare il cuore origami
+  hint.onclick = () => {
+    const img = document.createElement("img");
+    img.src = "cuore_origami.png";  // sostituisci con il tuo file immagine
+    img.alt = "Cuore Origami";
+    img.style.width = "200px";
+    img.style.marginTop = "20px";
+    img.style.animation = "pop 0.5s ease forwards";
+    document.body.appendChild(img);
+
+    // Opzionale: rimuove il messaggio per non cliccare più
+    hint.remove();
+  };
+
+  // Cuori animati in background
   setInterval(createHeart, 200);
 };
+
 
 function createHeart() {
   const heart = document.createElement("div");
