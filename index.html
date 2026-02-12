@@ -76,6 +76,12 @@ button {
   0% { transform: scale(0); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
 </style>
 </head>
 
@@ -187,26 +193,35 @@ yesBtn.onclick = () => {
 
   // Messaggio interattivo
   const hint = document.createElement("p");
-  hint.textContent = "Beneeee! adesso ti sto facendo anche un cuore origami, conta fino a 3 e puoi cliccare";
-  hint.style.cursor = "pointer";
-  hint.style.fontSize = "1.5rem";
-  hint.style.textAlign = "center";
-  hint.style.padding = "20px";
-  hint.style.border = "2px dashed white";
-  hint.style.borderRadius = "12px";
-  hint.style.transition = "all 0.3s ease";
-  hint.style.userSelect = "none";
-  container.appendChild(hint);
+hint.innerHTML = "Beneeee! Adesso ti sto facendo anche un cuore origami ❤️<br>Conta fino a 3 e poi clicca!";
+hint.style.fontSize = "1.6rem";
+hint.style.fontWeight = "600";
+hint.style.textAlign = "center";
+hint.style.padding = "25px 30px";
+hint.style.border = "3px dashed #ffffffaa"; // bordo semi-trasparente
+hint.style.borderRadius = "15px";
+hint.style.backgroundColor = "rgba(255,255,255,0.1)"; // leggero sfondo
+hint.style.transition = "all 0.3s ease";
+hint.style.userSelect = "none";
+hint.style.boxShadow = "0 0 15px rgba(255,255,255,0.4)"; // leggero glow
+hint.style.lineHeight = "1.4";
+hint.style.animation = "pulse 2s infinite";
+container.appendChild(hint);
 
-  // Hover effetto
+
+
   hint.addEventListener("mouseenter", () => {
-    hint.style.transform = "scale(1.05)";
-    hint.style.backgroundColor = "rgba(255,255,255,0.1)";
-  });
-  hint.addEventListener("mouseleave", () => {
-    hint.style.transform = "scale(1)";
-    hint.style.backgroundColor = "transparent";
-  });
+  hint.style.transform = "scale(1.05)";
+  hint.style.backgroundColor = "rgba(255,255,255,0.2)";
+  hint.style.boxShadow = "0 0 25px rgba(255,255,255,0.6)";
+});
+
+hint.addEventListener("mouseleave", () => {
+  hint.style.transform = "scale(1)";
+  hint.style.backgroundColor = "rgba(255,255,255,0.1)";
+  hint.style.boxShadow = "0 0 15px rgba(255,255,255,0.4)";
+});
+
 
   // Click per mostrare cuore + messaggio finale + canzone
   hint.onclick = () => {
