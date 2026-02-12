@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Cena di San Valentino 💘</title>
+<title>Cena di San Valentino ❤️</title>
 
 <style>
 body {
@@ -70,6 +70,11 @@ button {
 @keyframes float {
   from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(-160px); opacity: 0; }
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 </style>
 </head>
@@ -168,42 +173,71 @@ noBtn.addEventListener("click", moveNo); // fallback
 
 // SÌ
 yesBtn.onclick = () => {
-  const song = new Audio("tananai_rave_eclissi.mp3");
-  song.play();
-
-  // Rimuove tutto il contenuto precedente
+  // Svuota la pagina
   document.body.innerHTML = "";
 
-  // Messaggio principale
-  const h1 = document.createElement("h1");
-  h1.textContent = "Buon San Valentino Faty ❤️";
-  document.body.appendChild(h1);
+  // Contenitore minimal
+  const container = document.createElement("div");
+  container.style.height = "100vh";
+  container.style.display = "flex";
+  container.style.justifyContent = "center";
+  container.style.alignItems = "center";
+  container.style.flexDirection = "column";
+  container.style.background = "linear-gradient(135deg, #ff758c, #ff7eb3)";
+  document.body.appendChild(container);
 
-  // Messaggio interattivo per far comparire il cuore
+  // Messaggio interattivo
   const hint = document.createElement("p");
-  hint.textContent = "Pensa che ti sto facendo anche uno di questi mentre mangiamo (clicca qui)";
+  hint.textContent = "Beneeee! adesso ti sto facendo anche un cuore origami, conta fino a 3 e puoi cliccare";
   hint.style.cursor = "pointer";
   hint.style.fontSize = "1.5rem";
-  hint.style.marginTop = "20px";
-  document.body.appendChild(hint);
+  hint.style.textAlign = "center";
+  hint.style.padding = "20px";
+  hint.style.border = "2px dashed white";
+  hint.style.borderRadius = "12px";
+  hint.style.transition = "all 0.3s ease";
+  hint.style.userSelect = "none";
+  container.appendChild(hint);
 
-  // Funzione per mostrare il cuore origami
+  // Hover effetto
+  hint.addEventListener("mouseenter", () => {
+    hint.style.transform = "scale(1.05)";
+    hint.style.backgroundColor = "rgba(255,255,255,0.1)";
+  });
+  hint.addEventListener("mouseleave", () => {
+    hint.style.transform = "scale(1)";
+    hint.style.backgroundColor = "transparent";
+  });
+
+  // Click per mostrare cuore + messaggio finale + canzone
   hint.onclick = () => {
+    // Messaggio finale
+    const h1 = document.createElement("h1");
+    h1.textContent = "Buon San Valentino Faty ❤️";
+    h1.style.marginTop = "20px";
+    container.appendChild(h1);
+
+    // Cuore origami
     const img = document.createElement("img");
-    img.src = "cuore_origami.png";  // sostituisci con il tuo file immagine
+    img.src = "cuore_origami.png"; // sostituisci con il tuo file
     img.alt = "Cuore Origami";
     img.style.width = "200px";
     img.style.marginTop = "20px";
     img.style.animation = "pop 0.5s ease forwards";
-    document.body.appendChild(img);
+    container.appendChild(img);
 
-    // Opzionale: rimuove il messaggio per non cliccare più
+    // Riproduzione canzone
+    const song = new Audio("tananai_rave_eclissi.mp3");
+    song.play();
+
+    // Rimuoviamo il messaggio cliccabile
     hint.remove();
-  };
 
-  // Cuori animati in background
-  setInterval(createHeart, 200);
+    // Cuori animati in background
+    setInterval(createHeart, 200);
+  };
 };
+
 
 
 function createHeart() {
